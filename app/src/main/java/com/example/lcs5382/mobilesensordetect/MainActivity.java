@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,9 +23,9 @@ import java.io.PrintWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/** 2019.2.9 01:10 Made by CheonSol Lee
+/** 2019.2.10 00:02 Made by CheonSol Lee
  *
- * 추가 기능 : Git 재연결2
+ * 추가 기능 : FileName & CaseNumber를 입력하여 파일명으로 사용
  *
  * */
 public class MainActivity extends Activity {
@@ -43,6 +44,7 @@ public class MainActivity extends Activity {
     TextView magnoValueX, magnoValueY, magnoValueZ;
     Button btnStart, btnStop, btnSave;
     TextView tvTimer;
+    EditText editFileName, editCaseNumber;
 
     private static int count = 0; // 시간단위 인덱스
 
@@ -53,6 +55,8 @@ public class MainActivity extends Activity {
     private final static int BTN_SAVE  = 3;
 
     private boolean token = true;  // false:Stop , true:Run
+
+    private static String fileName, caseNumber;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,9 @@ public class MainActivity extends Activity {
 
         tvTimer = (TextView) findViewById(R.id.tv_timer);
 
+        editFileName = (EditText) findViewById(R.id.edit_file_name);
+        editCaseNumber = (EditText) findViewById(R.id.edit_case_number);
+
         btnStart = (Button) findViewById(R.id.btn_start);
         btnStop  = (Button) findViewById(R.id.btn_stop);
 //        btnSave  = (Button) findViewById(R.id.btn_save);
@@ -106,6 +113,14 @@ public class MainActivity extends Activity {
                 switch (returnButtonType(v)){
                     // RED : RUN, GRAY : STOP
                     case BTN_START:{
+                        if(editFileName.getText().toString() == "" || editCaseNumber.getText().toString() == ""){
+                            Toast.makeText(MainActivity.this,"파일명을 채워주세요(공백x)",Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+
+                        fileName = editFileName.getText().toString();
+                        caseNumber = editCaseNumber.getText().toString();
+
                         Toast.makeText(MainActivity.this,"Running",Toast.LENGTH_SHORT).show();
                         btnStart.setBackgroundColor(Color.RED);
                         btnStop.setBackgroundColor(Color.GRAY);
@@ -151,6 +166,15 @@ public class MainActivity extends Activity {
             }
         }
     };
+
+    /* 파일명, 케이스횟수를 리턴*/
+    private String returnFileName(){
+        return fileName;
+    }
+
+    private String returnCaseNumber(){
+        return caseNumber;
+    }
 
     private void printTimer(){
         tvTimer.setText(String.valueOf(count));
@@ -335,7 +359,7 @@ public class MainActivity extends Activity {
 
     /* 파일 입출력 : csv파일로 저장 */
     private void makeFile(String data) throws IOException{
-        String fileName = getExternalFilesDir(null)+"/test.csv";
+        String fileName = getExternalFilesDir(null)+"/"+ returnFileName() + "_" + returnCaseNumber() +".csv";
         Log.i("make_file", fileName);
         Log.i("make_file_data", data);
 
