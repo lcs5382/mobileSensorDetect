@@ -22,7 +22,11 @@ import java.io.PrintWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/** 2019.2.9 01:10 Made by CheonSol Lee  test1*/
+/** 2019.2.9 01:10 Made by CheonSol Lee
+ *
+ * 추가 기능 : Timer 추가
+ *
+ * */
 public class MainActivity extends Activity {
     SensorManager sensorManager;
     SensorEventListener accListener;
