@@ -24,7 +24,7 @@ import java.util.TimerTask;
 
 /** 2019.2.9 01:10 Made by CheonSol Lee
  *
- * 추가 기능 : Timer 추가
+ * 추가 기능 : Git 재연결
  *
  * */
 public class MainActivity extends Activity {
