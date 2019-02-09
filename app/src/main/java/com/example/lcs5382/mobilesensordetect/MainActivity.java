@@ -23,9 +23,9 @@ import java.io.PrintWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/** 2019.2.10 00:02 Made by CheonSol Lee
+/** 2019.2.10 00:31 Made by CheonSol Lee
  *
- * 추가 기능 : FileName & CaseNumber를 입력하여 파일명으로 사용
+ * 추가 기능 : 공백체크
  *
  * */
 public class MainActivity extends Activity {
@@ -113,11 +113,13 @@ public class MainActivity extends Activity {
                 switch (returnButtonType(v)){
                     // RED : RUN, GRAY : STOP
                     case BTN_START:{
-                        if(editFileName.getText().toString() == "" || editCaseNumber.getText().toString() == ""){
+                        // 공백체크
+                        if(editFileName.getText().toString().replace(" ","").equals("") || editCaseNumber.getText().toString().replace(" ","").equals("")){
                             Toast.makeText(MainActivity.this,"파일명을 채워주세요(공백x)",Toast.LENGTH_SHORT).show();
+                            stopSensorDetection();
                             break;
                         }
-
+                        Log.i("nullCheck", String.valueOf(count));
                         fileName = editFileName.getText().toString();
                         caseNumber = editCaseNumber.getText().toString();
 
@@ -146,6 +148,11 @@ public class MainActivity extends Activity {
         public void onClick(View v) {
             switch (returnButtonType(v)){
                 case BTN_START:{
+                    // 공백체크
+                    if(editFileName.getText().toString().replace(" ","").equals("") || editCaseNumber.getText().toString().replace(" ","").equals("")){
+                        break;
+                    }
+
                     try {
                         startSensorDetection();
                     } catch (IOException e) {
