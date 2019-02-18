@@ -6,6 +6,11 @@ public class SensorData {
     private double oriValueX, oriValueY, oriValueZ;
     private double gyroValueX, gyroValueY, gyroValueZ;
     private double magnoValueX, magnoValueY, magnoValueZ;
+    private double pressureValue;
+
+
+
+
 
     public int getCount() {
         return count;
@@ -62,6 +67,13 @@ public class SensorData {
         data = "" + getMagnoValueX() + "," + getMagnoValueY() + "," + getMagnoValueZ();
         return data;
     }
+
+    public String getPressureStringList(){
+        String data = "";
+        data = "" + getPressureValue();
+        return data;
+    }
+
 
     public double getAccValueX() {
         return accValueX;
@@ -157,5 +169,13 @@ public class SensorData {
 
     public void setMagnoValueZ(double magnoValueZ) {
         this.magnoValueZ = magnoValueZ;
+    }
+
+    public double getPressureValue() {
+        return pressureValue;
+    }
+
+    public void setPressureValue(double pressureValue) {
+        this.pressureValue = pressureValue;
     }
 }
