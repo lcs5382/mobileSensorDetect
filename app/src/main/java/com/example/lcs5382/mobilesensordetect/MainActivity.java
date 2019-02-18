@@ -23,9 +23,9 @@ import java.io.PrintWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/** 2019.2.10 00:31 Made by CheonSol Lee
+/** 2019.2.17:59 Made by CheonSol Lee
  *
- * 추가 기능 : 공백체크
+ * 추가 기능 : 노트북 재연결
  *
  * */
 public class MainActivity extends Activity {
