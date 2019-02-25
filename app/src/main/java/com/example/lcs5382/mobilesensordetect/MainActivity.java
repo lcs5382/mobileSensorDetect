@@ -23,9 +23,11 @@ import java.io.PrintWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/** 2019.2.19 00:15 Made by CheonSol Lee
+
+
+/** 2019.2.25 12:30 Made by CheonSol Lee
  *
- * 추가 기능 : 마그노센서, 압력센서 추가
+ * 추가 기능 : 가속도, 마그노센서, 압력센서 추가
  *
  * */
 public class MainActivity extends Activity {
@@ -62,6 +64,7 @@ public class MainActivity extends Activity {
     private static String fileName, caseNumber;
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,21 +72,21 @@ public class MainActivity extends Activity {
 
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);          // SensorManager 인스턴스를 가져옴
 
-//        accSensor   = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);  // 가속도 센서
+        accSensor   = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);  // 가속도 센서
 //        oriSensor   = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);    // 방향   센서
 //        gyroSensor  = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);      // 자이로 센서
         magnoSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD); // 마그노 센서
         pressureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);    // 압력 센서
 
-//        accListener   = new accListener();      // 가속도 리스너 인스턴스
+        accListener   = new accListener();      // 가속도 리스너 인스턴스
 //        oriListener   = new oriListener();      // 방향   리스너 인스턴스
 //        gyroListener  = new gyroListener();     // 자이로 리스너 인스턴스
         magnoListener = new magnoListener();    // 마그노 리스너 인스턴스
         pressureListener = new pressureListener(); //압력 리스너 인스턴스
 
-//        accValueX = (TextView)findViewById(R.id.acc_x);
-//        accValueY = (TextView)findViewById(R.id.acc_y);
-//        accValueZ = (TextView)findViewById(R.id.acc_z);
+        accValueX = (TextView)findViewById(R.id.acc_x);
+        accValueY = (TextView)findViewById(R.id.acc_y);
+        accValueZ = (TextView)findViewById(R.id.acc_z);
 //        oriValueX = (TextView)findViewById(R.id.ori_x);
 //        oriValueY = (TextView)findViewById(R.id.ori_y);
 //        oriValueZ = (TextView)findViewById(R.id.ori_z);
@@ -246,7 +249,7 @@ public class MainActivity extends Activity {
     private void startSensorDetection() throws IOException {
         token = true;
         count = 0;
-//        sensorManager.registerListener(accListener  , accSensor,   SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(accListener  , accSensor,   SensorManager.SENSOR_DELAY_NORMAL);
 //        sensorManager.registerListener(oriListener  , oriSensor,   SensorManager.SENSOR_DELAY_NORMAL);
 //        sensorManager.registerListener(gyroListener , gyroSensor,  SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(magnoListener, magnoSensor, SensorManager.SENSOR_DELAY_NORMAL);
@@ -265,7 +268,7 @@ public class MainActivity extends Activity {
         String data;
 
         data  = String.valueOf(sensorData.getCount()) + ",";
-//        data += "" + sensorData.getAccStringList()  + ",";
+        data += "" + sensorData.getAccStringList()  + ",";
 //        data += "" + sensorData.getOriStringList()  + ",";
 //        data += "" + sensorData.getGyroStringList() + ",";
         data += "" + sensorData.getMagnoStringList() + ",";
@@ -277,7 +280,7 @@ public class MainActivity extends Activity {
     /* 센서탐지 정지*/
     private void stopSensorDetection(){
         token = false;
-//        sensorManager.unregisterListener(accListener);
+        sensorManager.unregisterListener(accListener);
 //        sensorManager.unregisterListener(oriListener);
 //        sensorManager.unregisterListener(gyroListener);
         sensorManager.unregisterListener(magnoListener);
@@ -286,30 +289,30 @@ public class MainActivity extends Activity {
     }
 
 
-//    /* 가속도 센서 값이 바뀔때마다 호출됨 */
-//    private class accListener implements SensorEventListener {
-//        public void onSensorChanged(SensorEvent event) {
-//            double xValue = event.values[0];
-//            double yValue = event.values[1];
-//            double zValue = event.values[2];
-//
-//            accValueX.setText(Double.toString(xValue));
-//            accValueY.setText(Double.toString(yValue));
-//            accValueZ.setText(Double.toString(zValue));
-//
-//            sensorData.setAccValueList(xValue, yValue, zValue);
-//
-//
-//            Log.i("SENSOR", "Acceleration changed.");
-//            Log.i("SENSOR", "Acceleration X: " + event.values[0]
-//                    + ", Acceleration Y: " + event.values[1]
-//                    + ", Acceleration Z: " + event.values[2]);
-//        }
-//
-//        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-//        }
-//    }
-//
+    /* 가속도 센서 값이 바뀔때마다 호출됨 */
+    private class accListener implements SensorEventListener {
+        public void onSensorChanged(SensorEvent event) {
+            double xValue = event.values[0];
+            double yValue = event.values[1];
+            double zValue = event.values[2];
+
+            accValueX.setText(Double.toString(xValue));
+            accValueY.setText(Double.toString(yValue));
+            accValueZ.setText(Double.toString(zValue));
+
+            sensorData.setAccValueList(xValue, yValue, zValue);
+
+
+            Log.i("SENSOR", "Acceleration changed.");
+            Log.i("SENSOR", "Acceleration X: " + event.values[0]
+                    + ", Acceleration Y: " + event.values[1]
+                    + ", Acceleration Z: " + event.values[2]);
+        }
+
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+    }
+
 //    /* 방향 센서 값이 바뀔때마다 호출됨 */
 //    private class oriListener implements SensorEventListener {
 //        public void onSensorChanged(SensorEvent event) {
