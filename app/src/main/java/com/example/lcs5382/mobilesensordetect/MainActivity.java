@@ -23,7 +23,7 @@ import java.util.TimerTask;
 
 
 
-/** 2019.2.26 16:41 Made by CheonSol Lee
+/** 2019.3.28 20:20 Made by CheonSol Lee
  *
  * 추가 기능 : 1) 가속도, 방향, 자이로, 마그노센서, 압력센서 추가
  *           2) 타이머 정확도 높이기
@@ -235,7 +235,7 @@ public class MainActivity extends Activity {
         };
 
         //3초 뒤에 시작 후 1초마다 갱신
-        timer.scheduleAtFixedRate(timerTask, 3000, 1000);
+        timer.scheduleAtFixedRate(timerTask, 3000, 100);
     }
 
     /* 버튼타입에 따라 정수형으로 리턴*/
