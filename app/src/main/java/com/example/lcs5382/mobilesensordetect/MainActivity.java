@@ -23,10 +23,11 @@ import java.util.TimerTask;
 
 
 
-/** 2019.3.28 20:20 Made by CheonSol Lee
+/** 2019.3.28 20:20
+ *  Made by CheonSol Lee
  *
- * 추가 기능 : 1) 가속도, 방향, 자이로, 마그노센서, 압력센서 추가
- *           2) 타이머 정확도 높이기
+ * 추가 기능 : 1) 가속도, 방향, 자이로
+ *           2) 타이머 제거
  *
  * */
 public class MainActivity extends Activity {
@@ -34,18 +35,15 @@ public class MainActivity extends Activity {
     SensorEventListener accListener;
     SensorEventListener oriListener;
     SensorEventListener gyroListener;
-    SensorEventListener magnoListener;
-    SensorEventListener pressureListener;
+
     Sensor oriSensor;
     Sensor accSensor;
     Sensor gyroSensor;
-    Sensor magnoSensor;
-    Sensor pressureSensor;
+
     TextView accValueX, accValueY, accValueZ;
     TextView oriValueX, oriValueY, oriValueZ;
     TextView gyroValueX, gyroValueY, gyroValueZ;
-    TextView magnoValueX, magnoValueY, magnoValueZ;
-    TextView pressureValue;
+
     Button btnStart, btnStop, btnSave;
     TextView tvTimerHour, tvTimerMin, tvTimerSec;
     EditText editFileName, editCaseNumber;
@@ -74,14 +72,10 @@ public class MainActivity extends Activity {
         accSensor   = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);  // 가속도 센서
         oriSensor   = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);    // 방향   센서
         gyroSensor  = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);      // 자이로 센서
-        magnoSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD); // 마그노 센서
-        pressureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);    // 압력 센서
 
         accListener   = new accListener();      // 가속도 리스너 인스턴스
         oriListener   = new oriListener();      // 방향   리스너 인스턴스
         gyroListener  = new gyroListener();     // 자이로 리스너 인스턴스
-        magnoListener = new magnoListener();    // 마그노 리스너 인스턴스
-        pressureListener = new pressureListener(); //압력 리스너 인스턴스
 
         accValueX = (TextView)findViewById(R.id.acc_x);
         accValueY = (TextView)findViewById(R.id.acc_y);
@@ -92,14 +86,10 @@ public class MainActivity extends Activity {
         gyroValueX = (TextView)findViewById(R.id.gyro_x);
         gyroValueY = (TextView)findViewById(R.id.gyro_y);
         gyroValueZ = (TextView)findViewById(R.id.gyro_z);
-        magnoValueX = (TextView) findViewById(R.id.magno_x);
-        magnoValueY = (TextView) findViewById(R.id.magno_y);
-        magnoValueZ = (TextView) findViewById(R.id.magno_z);
-        pressureValue = (TextView) findViewById(R.id.pressure_value);
 
-        tvTimerHour = (TextView) findViewById(R.id.tv_timer_hour);
-        tvTimerMin = (TextView) findViewById(R.id.tv_timer_min);
-        tvTimerSec = (TextView) findViewById(R.id.tv_timer_sec);
+//        tvTimerHour = (TextView) findViewById(R.id.tv_timer_hour);
+//        tvTimerMin = (TextView) findViewById(R.id.tv_timer_min);
+//        tvTimerSec = (TextView) findViewById(R.id.tv_timer_sec);
 
         editFileName = (EditText) findViewById(R.id.edit_file_name);
         editCaseNumber = (EditText) findViewById(R.id.edit_case_number);
@@ -194,49 +184,49 @@ public class MainActivity extends Activity {
         return caseNumber;
     }
 
-    private void printTimer(){
-        int tmp = 0;
-        int hour = count/3600;
-        tmp = count%3600;
-        int min = tmp/60;
-        int sec = tmp%60;
+//    private void printTimer(){
+//        int tmp = 0;
+//        int hour = count/3600;
+//        tmp = count%3600;
+//        int min = tmp/60;
+//        int sec = tmp%60;
+//
+//        tvTimerHour.setText(String.valueOf(hour));
+//        tvTimerMin.setText(String.valueOf(min));
+//        tvTimerSec.setText(String.valueOf(sec));
+//    }
 
-        tvTimerHour.setText(String.valueOf(hour));
-        tvTimerMin.setText(String.valueOf(min));
-        tvTimerSec.setText(String.valueOf(sec));
-    }
-
-    /* 특정 시간에 1번씩 TimerTask가 실행*/
-    private void timerSetting(){
-        final Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-
-                //BTN_STOP누를시 timer가 해지
-                if(token == false){
-                    timer.cancel();
-                }
-                else{
-                    count++;
-                    sensorData.setCount(count);
-                    Log.i("timer_count", String.valueOf(count));
-                    String data = convertSensorValueType(sensorData);
-
-//                    printTimer();
-
-                    try {
-                        makeFile(data);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        };
-
-        //3초 뒤에 시작 후 1초마다 갱신
-        timer.scheduleAtFixedRate(timerTask, 3000, 100);
-    }
+//    /* 특정 시간에 1번씩 TimerTask가 실행*/
+//    private void timerSetting(){
+//        final Timer timer = new Timer();
+//        TimerTask timerTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//
+//                //BTN_STOP누를시 timer가 해지
+//                if(token == false){
+//                    timer.cancel();
+//                }
+//                else{
+//                    count++;
+//                    sensorData.setCount(count);
+//                    Log.i("timer_count", String.valueOf(count));
+//                    String data = convertSensorValueType(sensorData);
+//
+////                    printTimer();
+//
+//                    try {
+//                        makeFile(data);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        };
+//
+//        //3초 뒤에 시작 후 1초마다 갱신
+//        timer.scheduleAtFixedRate(timerTask, 3000, 100);
+//    }
 
     /* 버튼타입에 따라 정수형으로 리턴*/
     private int returnButtonType(View v) {
@@ -252,14 +242,13 @@ public class MainActivity extends Activity {
         sensorManager.registerListener(accListener  , accSensor,   SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(oriListener  , oriSensor,   SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(gyroListener , gyroSensor,  SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(magnoListener, magnoSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(pressureListener, pressureSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
         Log.i("start_count", String.valueOf(count));
 
         //token이 true: run, false: stop
         if(token){
             // csv파일로 전송
-            timerSetting();
+//            timerSetting();
         }
     }
 
@@ -270,9 +259,7 @@ public class MainActivity extends Activity {
         data  = String.valueOf(sensorData.getCount()) + ",";
         data += "" + sensorData.getAccStringList()  + ",";
         data += "" + sensorData.getOriStringList()  + ",";
-        data += "" + sensorData.getGyroStringList() + ",";
-        data += "" + sensorData.getMagnoStringList() + ",";
-        data += "" + sensorData.getPressureValue();
+        data += "" + sensorData.getGyroStringList();
         Log.i("in_convert_func", data);
         return data;
     }
@@ -283,8 +270,7 @@ public class MainActivity extends Activity {
         sensorManager.unregisterListener(accListener);
         sensorManager.unregisterListener(oriListener);
         sensorManager.unregisterListener(gyroListener);
-        sensorManager.unregisterListener(magnoListener);
-        sensorManager.unregisterListener(pressureListener);
+
         Log.i("BTN_STOP_IN", String.valueOf(count));
     }
 
@@ -361,52 +347,52 @@ public class MainActivity extends Activity {
         }
     }
 
-    /* 마그노 센서 값이 바뀔때마다 호출됨 */
-    private class magnoListener implements SensorEventListener {
-        public void onSensorChanged(SensorEvent event) {
-            double xValue = event.values[0];
-            double yValue = event.values[1];
-            double zValue = event.values[2];
-
-            magnoValueX.setText(Double.toString(xValue));
-            magnoValueY.setText(Double.toString(yValue));
-            magnoValueZ.setText(Double.toString(zValue));
-
-            sensorData.setMagnoValueList(xValue, yValue, zValue);
-
-            // 타이머 추가
-            printTimer();
-
-            Log.i("SENSOR", "Magnetic sensor changed.");
-            Log.i("SENSOR", "Magnetic sensor X: " + event.values[0]
-                    + ", Magnetic sensor Y: " + event.values[1]
-                    + ", Magnetic sensor Z: " + event.values[2]);
-        }
-
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-        }
-    }
-
-    /* 마그노 센서 값이 바뀔때마다 호출됨 */
-    private class pressureListener implements SensorEventListener {
-        public void onSensorChanged(SensorEvent event) {
-            double value = event.values[0];
-
-            pressureValue.setText(Double.toString(value));
-
-            sensorData.setPressureValue(value);
-
-
-
-            Log.i("SENSOR", "Pressure sensor changed.");
-            Log.i("SENSOR", "Pressure sensor : " + event.values[0]);
-        }
-
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-        }
-    }
+//    /* 마그노 센서 값이 바뀔때마다 호출됨 */
+//    private class magnoListener implements SensorEventListener {
+//        public void onSensorChanged(SensorEvent event) {
+//            double xValue = event.values[0];
+//            double yValue = event.values[1];
+//            double zValue = event.values[2];
+//
+//            magnoValueX.setText(Double.toString(xValue));
+//            magnoValueY.setText(Double.toString(yValue));
+//            magnoValueZ.setText(Double.toString(zValue));
+//
+//            sensorData.setMagnoValueList(xValue, yValue, zValue);
+//
+//            // 타이머 추가
+////            printTimer();
+//
+//            Log.i("SENSOR", "Magnetic sensor changed.");
+//            Log.i("SENSOR", "Magnetic sensor X: " + event.values[0]
+//                    + ", Magnetic sensor Y: " + event.values[1]
+//                    + ", Magnetic sensor Z: " + event.values[2]);
+//        }
+//
+//        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//
+//        }
+//    }
+//
+//    /* 마그노 센서 값이 바뀔때마다 호출됨 */
+//    private class pressureListener implements SensorEventListener {
+//        public void onSensorChanged(SensorEvent event) {
+//            double value = event.values[0];
+//
+//            pressureValue.setText(Double.toString(value));
+//
+//            sensorData.setPressureValue(value);
+//
+//
+//
+//            Log.i("SENSOR", "Pressure sensor changed.");
+//            Log.i("SENSOR", "Pressure sensor : " + event.values[0]);
+//        }
+//
+//        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//
+//        }
+//    }
 
     /* 파일 입출력 : csv파일로 저장 */
     private void makeFile(String data) throws IOException{
